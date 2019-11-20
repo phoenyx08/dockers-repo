@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  nginx:
+    container_name: nginx
+    image: phoenyx08/ps-nginx:latest
+    volumes:
+    - ~/projects/phoenyx-studio:/usr/share/nginx/html
+    - ./conf.d:/etc/nginx/conf.d
+    ports:
+    - "80:80"
+
+  php:
+    container_name: php
+    image: phoenyx08/ps-php73-dev:latest
+    volumes:
+    - ~/projects/phoenyx-studio:/var/www/html
+
+  mysql:
+    container_name: mysql
+    image: phoenyx08/ps-mysql-dev:latest
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+    - ~/docker/db-data:/var/lib/mysql
+    - ./access:/secrets
+    ports:
+    - "3306:3306"
+
