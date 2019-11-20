@@ -5,7 +5,7 @@ services:
     container_name: nginx
     image: phoenyx08/ps-nginx:latest
     volumes:
-    - ~/projects/phoenyx-studio:/usr/share/nginx/html
+    - ~/projects:/usr/share/nginx/html
     - ./conf.d:/etc/nginx/conf.d
     ports:
     - "80:80"
@@ -14,7 +14,7 @@ services:
     container_name: php
     image: phoenyx08/ps-php73-dev:latest
     volumes:
-    - ~/projects/phoenyx-studio:/var/www/html
+    - ~/projects:/var/www/html
 
   mysql:
     container_name: mysql
