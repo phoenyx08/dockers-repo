@@ -15,6 +15,7 @@ services:
     image: phoenyx08/ps-php73-dev:latest
     volumes:
     - ~/projects:/var/www/html
+    - ./php/config:/usr/local/etc/php
 
   mysql:
     container_name: mysql
