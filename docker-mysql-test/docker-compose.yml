@@ -1,0 +1,125 @@
+version: "2"
+services:
+
+  apache:
+    container_name: test_apache
+    restart: always
+    image: httpd:latest
+    # Put your projects directory before the ":"
+    # Put your httpd-vhosts.conf location (absolute path)
+    volumes:
+      - /Users/phoenyx/projects/nxte/Cadeau_Concepten/caco1901-centralbackend/:/usr/local/apache2/htdocs/:delegated
+      #- ~/html/:/usr/local/apache2/htdocs/
+      #- ~/dockerstuff/log/:/var/log/apache2/
+      #- ~/dockerstuff/apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+      #- ~/dockerstuff/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    ports:
+      - "80:80"
+      #- "8056:8080"
+    #networks:
+    #  frontend:
+    #    ipv4_address: 172.21.1.2
+    #  backend:
+    #    ipv4_address: 172.21.0.2
+    depends_on:
+      - php
+    #  - php56
+      - db57
+      - db80
+  #nginx:
+
+    #container_name: dev_nginx
+    #restart: always
+    #image: nginx
+    # Put your projects directory before the ":"
+    # Put your httpd-vhosts.conf location (absolute path)
+    #volumes:
+    #  - ~/html/:/usr/share/nginx/html/
+    #  - ~/dockerstuff/nginx/configs/:/etc/nginx/conf.d/
+    #  - ~/dockerstuff/apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+    #  - ~/dockerstuff/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    #ports:
+    #  - "8080:80"
+    #  - "8056:8080"
+    #networks:
+    #  frontend:
+    #    ipv4_address: 172.21.1.3
+    #  backend:
+    #    ipv4_address: 172.21.0.3
+    #depends_on:
+    #  - php
+    #  - php56
+    #  - db
+
+  php:
+    container_name: test_php
+    restart: always
+    # Change php version here php56/php71/php72/php73
+    image: php:7.4-fpm
+    # Put your projects directory before the ":"
+    # Put your custom.user.ini location (absolute path)
+    volumes:
+      - /Users/phoenyx/projects/nxte/Cadeau_Concepten/caco1901-centralbackend/:/usr/local/apache2/htdocs/:delegated
+      #- ~/dockerstuff/php/custom.user.ini:/usr/local/etc/php/conf.d/custom.user.ini
+      #- ~/dockerstuff/php/xdebug_profiler/:/var/xdebug_profiler/
+    #networks:
+    #  backend:
+    #    ipv4_address: 172.21.0.4
+    #environment:
+    #  XDEBUG_CONFIG: idekey=PHPSTORM
+
+  #php56:
+   # container_name: dev_php56
+   # restart: always
+    # Change php version here php56/php71/php72/php73
+    #image: php56
+    # Put your projects directory before the ":"
+    # Put your custom.user.ini location (absolute path)
+    #volumes:
+     # - ~/html/:/usr/local/apache2/htdocs/
+    #  - ~/dockerstuff/php/custom.user.ini:/usr/local/etc/php/conf.d/custom.user.ini
+    #networks:
+    #  backend:
+    #    ipv4_address: 172.21.0.5
+    #environment:
+    #  XDEBUG_CONFIG: idekey=PHPSTORM
+
+  db57:
+    container_name: test_db57
+    restart: always
+    image: mysql:5.7
+    #networks:
+    #  backend:
+    #    ipv4_address: 172.21.0.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+    # Change this path to your db dir from your previous docker-compose.yml
+    volumes:
+    # IMPORTANT! This path should be changed because each user keeps databases in different directories
+    #  - ~/dockerstuff/data:/var/lib/mysql
+      - /Users/phoenyx/projects/nxte/Cadeau_Concepten/general/:/home/:delegated
+    ports:
+      - 33060:3306
+    command:
+      - "--max_allowed_packet=1073741824"
+      - "--innodb_flush_log_at_trx_commit=0"
+
+  db80:
+    container_name: test_db80
+    restart: always
+    image: mysql:8.0
+    #networks:
+    #  backend:
+    #    ipv4_address: 172.21.0.6
+    environment:
+        - MYSQL_ROOT_PASSWORD=rootpass
+    # Change this path to your db dir from your previous docker-compose.yml
+    volumes:
+    # IMPORTANT! This path should be changed because each user keeps databases in different directories
+    #  - ~/dockerstuff/data:/var/lib/mysql
+        - /Users/phoenyx/projects/nxte/Cadeau_Concepten/general/:/home/:delegated
+    ports:
+        - 33061:3306
+    command:
+        - "--max_allowed_packet=1073741824"
+        - "--innodb_flush_log_at_trx_commit=0"
