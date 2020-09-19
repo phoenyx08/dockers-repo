@@ -1,0 +1,44 @@
+version: '2'
+services:
+  apache:
+    container_name: apache
+    restart: always
+    build: ./apache
+    volumes:
+      - ${LOCAL_DOCUMENT_ROOT}:/usr/local/apache2/htdocs/
+    ports:
+      - "80:80"
+    depends_on: 
+      - php
+  php:
+    container_name: php
+    restart: always
+    build: ./php
+    volumes:
+      - ${LOCAL_DOCUMENT_ROOT}:/usr/local/apache2/htdocs/
+  db57:
+    container_name: db57
+    restart: always
+    build: ./mysql57
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT}  
+    volumes:
+      - ${DUMPS_STORAGE}:/home/
+    ports:
+      - 33060:3306
+    command:
+      - "--max_allowed_packet=1073741824"
+      - "--innodb_flush_log_at_trx_commit=0"
+  db80:
+    container_name: db80
+    restart: always
+    build: ./mysql80
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT}  
+    volumes:
+      - ${DUMPS_STORAGE}:/home/:delegated
+    ports:
+      - 33061:3306
+    command:
+      - "--max_allowed_packet=1073741824"
+      - "--innodb_flush_log_at_trx_commit=0"
