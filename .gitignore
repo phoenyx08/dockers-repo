@@ -3,3 +3,4 @@
 dev/nginx-php-mysql-dev/access/password
 dev/nginx-php-mysql-dev/conf.d/sites/
 dev/nginx-php-mysql-dev/php/config/conf.d/*
+mysql-compare/.env
